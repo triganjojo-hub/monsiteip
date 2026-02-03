@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>TMOR</title>
+
+<style>
+body.light {
+    background: linear-gradient(135deg, #6679ce 0%, #764ba2 100%);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+    color:#333;
+}
+
+body.dark {
+    background: linear-gradient(135deg, #080c30 0%, #370f4e 100%);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+    color:#f0f0f0;
+}
+body.shadow {
+    background: radial-gradient(circle at top, #400000 0%, #000000 70%);
+    background-size: 200% 200%;
+    animation: gradientAnimation 20s ease infinite;
+    color: #ffcccc;
+}
+body.shadow .container,
+body.shadow .form-box {
+    background: rgba(20, 0, 0, 0.75);
+    color: #ffdddd;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.35);
+}
+body.shadow .menu-card:hover {
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
+}
+
+body.green {
+    background: radial-gradient(circle at top, #074000 0%, #000801 70%);
+    background-size: 200% 200%;
+    animation: gradientAnimation 20s ease infinite;
+    color: #ffcccc;
+}
+body.green .container,
+body.green .form-box {
+    background: rgba(0, 40, 0, 0.75);
+    color: #ccffcc;
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.35);
+}
+body.green .menu-card:hover {
+    box-shadow: 0 0 25px rgba(0, 255, 120, 0.6);
+}
+
+@keyframes gradientAnimation {
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.container, .form-box {
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    width: 350px;
+    margin: 80px auto;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+body.light .container, body.light .form-box {
+    background: rgba(255,255,255,0.15);
+    color: #333;
+}
+
+body.dark .container, body.dark .form-box {
+    background: rgba(30,30,30,0.6);
+    color: #f0f0f0;
+}
+
+.form-box { display: none; }
+
+input, select {
+    width:90%;
+    padding:10px;
+    margin:10px 0;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+body.dark input, body.dark select {
+    background: rgba(255,255,255,0.1);
+    color: #f0f0f0;
+}
+
+button {
+    background: linear-gradient(135deg,#667eea,#6b4094);
+    color:white;
+    border:none;
+    padding:12px 20px;
+    margin:10px;
+    border-radius:30px;
+    cursor:pointer;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+}
+button:active {
+    transform: scale(0.97);
+    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.35);
+}
+
+.logout {
+    background:#ff4d4d;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.logout:hover {
+    background: #ff1a1a;
+}
+.logout:hover {
+    background:#ff1a1a;
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(255, 0, 0, 0.4);
+}
+.logout:active {
+    transform: scale(0.97);
+    box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
+}
+
+.menu-grid {
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+    margin-top:20px;
+}
+
+.menu-card {
+    background: rgba(255,255,255,0.15);
+    padding:20px;
+    border-radius:15px;
+    cursor:pointer;
+}
+
+.menu-card {
+    background: rgba(255,255,255,0.15);
+    padding:20px;
+    border-radius:15px;
+    cursor:pointer;
+    transition: 
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+/* ✨ Effet au survol */
+.menu-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    background: rgba(255,255,255,0.25);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+}
+
+/* 🎯 Effet clic */
+.menu-card:active {
+    transform: translateY(-2px) scale(0.98);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+}
+.menu-card {
+    position: relative;
+}
+
+/* Tooltip */
+.menu-card::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    background: rgba(0,0,0,0.75);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.menu-card:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+.menu-card:hover {
+    animation: glowPulse 1.8s infinite alternate;
+}
+
+@keyframes glowPulse {
+    0% {
+        box-shadow: 0 0 10px rgba(255,255,255,0.2);
+    }
+    100% {
+        box-shadow: 0 0 30px rgba(255,255,255,0.55);
+    }
+}
+body.shadow .menu-card:hover {
+    animation: glowRed 1.8s infinite alternate;
+}
+
+@keyframes glowRed {
+    from { box-shadow: 0 0 10px rgba(255,0,0,0.3); }
+    to   { box-shadow: 0 0 35px rgba(255,0,0,0.7); }
+}
+
+body.green .menu-card:hover {
+    animation: glowGreen 1.8s infinite alternate;
+}
+
+@keyframes glowGreen {
+    from { box-shadow: 0 0 10px rgba(0,255,120,0.3); }
+    to   { box-shadow: 0 0 35px rgba(0,255,120,0.7); }
+}
+
+.badge {
+    background: red;
+    color: white;
+    font-size: 12px;
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-left: 6px;
+}
+
+#snakeGame button {
+    position: relative;
+    z-index: 10;
+}
+
+.play-btn {
+    background: linear-gradient(135deg, #00c853, #00a844);
+}
+
+.play-btn:hover {
+    box-shadow: 0 8px 20px rgba(0, 255, 120, 0.6);
+}
+
+.simon-btn{
+    width:100px;
+    height:100px;
+    border-radius:15px;
+    opacity:0.7;
+    cursor:pointer;
+    transition: opacity 0.2s, transform 0.1s;
+}
+.simon-btn.active{
+    opacity:1;
+    transform: scale(1.08);
+}
+
+</style>
+</head>
+
+<body class="light">
+
+<div class="container" id="mainMenu">
+<h2>Bienvenue dans TMOR</h2>
+<button onclick="openLogin()">Connexion</button>
+<button onclick="openSignup()">Inscription</button>
+</div>
+
+<div id="login" class="form-box">
+<h3>Connexion</h3>
+<input id="loginUsername" placeholder="Nom d'utilisateur">
+<input id="loginPassword" type="password" placeholder="Mot de passe">
+<button onclick="loginUser()">Se connecter</button>
+</div>
+
+<div id="signup" class="form-box">
+<h3>Inscription</h3>
+<input id="username" placeholder="Nom d'utilisateur">
+<input id="email" type="email" placeholder="Adresse email">
+<input id="password" type="password" placeholder="Mot de passe">
+<button onclick="signupUser()">S'inscrire</button>
+</div>
+
+<div id="userMenu" class="container" style="display:none;">
+<h2 id="welcomeText"></h2>
+
+<div class="menu-grid">
+
+<div class="menu-card" data-tooltip="Voir et modifier le profil">
+👤 Profil
+<select onchange="handleProfileAction(this.value); this.selectedIndex=0;">
+    <option value="">-- Profil --</option>
+    <option value="view">Voir profil</option>
+    <option value="edit">Changer de pseudo</option>
+    <option value="password">Changer mot de passe</option>
+</select>
+<button class="logout" onclick="deleteAccount()">Supprimer le compte</button>
+</div>
+
+<div class="menu-card" data-tooltip="Changer le thème de l'interface">
+⚙️ Paramètres
+<select id="modeSelect" onchange="changeMode(this.value)">
+<option value="light">Light</option>
+<option value="dark">Dark</option>
+<option value="shadow">Shadow</option>
+<option value="green">green</option>
+</select>
+</div>
+
+<div class="menu-card" onclick="openDashboard()" data-tooltip="Voir les statistiques">
+📊 Dashboard
+</div>
+
+<div class="menu-card" onclick="openMessages()" data-tooltip="Messagerie interne">
+💬 Messages <span id="msgBadge" class="badge" style="display:none;"></span>
+</div>
+
+<button class="logout" onclick="logout()">Déconnexion</button>
+</div>
+
+<div style="display:flex; justify-content:right; padding-right: 40px; margin-top: -58px;">
+    <button class="play-btn" onclick="openGameMenu()">▶️ Play</button>
+</div>
+</div>
+
+<div id="editProfile" class="form-box">
+<h3>Éditer le profil</h3>
+<input id="editUsername">
+<button onclick="saveProfile()">Enregistrer</button>
+<button class="logout" onclick="cancelEdit()">Annuler</button>
+<textarea id="editBio" placeholder="Ta bio..." style="width:90%; height:60px;"></textarea>
+</div>
+
+<div id="changePassword" class="form-box">
+<h3>Changer le mot de passe</h3>
+
+<input id="oldPassword" type="password" placeholder="Ancien mot de passe">
+<input id="newPassword" type="password" placeholder="Nouveau mot de passe">
+
+<button onclick="savePassword()">Enregistrer</button>
+<button class="logout" onclick="cancelPassword()">Annuler</button>
+</div>
+
+<div id="viewProfile" class="form-box">
+<h3>Mon profil</h3>
+
+<p><strong>Pseudo :</strong> <span id="profileUsername"></span></p>
+<p><strong>Email :</strong> <span id="profileEmail"></span></p>
+<p><strong>Bio :</strong> <span id="profileBio"></span></p>
+<p id="welcomeBio" style="opacity:0.8; font-style:italic; margin-top:5px;"></p>
+<p><strong>Mot de passe :</strong> ********</p>
+
+<button onclick="closeProfile()">Fermer</button>
+</div>
+
+<div id="messagesBox" class="form-box">
+<h3>Messagerie</h3>
+
+<input id="msgTo" placeholder="Pseudo du destinataire">
+<textarea id="msgText" placeholder="Ton message..." style="width:90%; height:80px;"></textarea>
+<button onclick="sendMessage()">Envoyer</button>
+<button class="logout" onclick="closeMessages()">Fermer</button>
+
+<hr>
+
+<h4>Boîte de réception</h4>
+<div id="inboxMessages"></div>
+</div>
+
+<div id="dashboard" class="form-box">
+<h3>📊 Dashboard</h3>
+
+<p><strong>Utilisateur :</strong> <span id="dashUsername"></span></p>
+<p><strong>Email :</strong> <span id="dashEmail"></span></p>
+
+<hr>
+
+<p>📨 Messages reçus : <strong id="dashInbox"></strong></p>
+<p>📤 Messages envoyés : <strong id="dashSent"></strong></p>
+
+<hr>
+
+<p>📅 Dernière connexion : <strong id="dashLastLogin"></strong></p>
+<hr>
+<h4>📜 Activité récente</h4>
+<div id="activityLog"></div>
+
+<button onclick="closeDashboard()">Retour</button>
+</div>
+
+<div id="gameMenu" class="form-box">
+    <h3>🎮 Menu des jeux</h3>
+
+    <div class="menu-grid">
+        <div class="menu-card" onclick="launchGame('snake')">
+            🐍 Snake
+        </div>
+
+        <div class="menu-card" onclick="launchGame('memory')">
+            🧠 Memory
+        </div>
+
+        <div class="menu-card" onclick="launchGame('clicker')">
+            🖱️ Clicker
+        </div>
+
+        <div class="menu-card" onclick="launchGame('reaction')">
+           ⚡ Réflexes
+        </div>
+
+        <div class="menu-card" onclick="launchGame('dodge')">
+           🟥 Dodge Cube
+        </div>
+
+        <div class="menu-card" onclick="launchGame('simon')">
+           🔵 Simon Says
+        </div>
+
+        <div class="menu-card" onclick="launchGame('aim')">
+           🎯 Aim Trainer
+        </div>
+
+        <div class="menu-card" onclick="launchGame('pong')">
+           🏓 Pong
+        </div>
+
+        <div class="menu-card" onclick="launchGame('pong')">
+           🏓 Pong Ultimate
+        </div>
+
+        <div class="menu-card" onclick="launchGame('coming')">
+            ❓ À venir
+        </div>
+    </div>
+
+    <button class="logout" onclick="closeGameMenu()">Retour</button>
+</div>
+
+<script>
+const mainMenu = document.getElementById("mainMenu");
+const loginBox = document.getElementById("login");
+const signupBox = document.getElementById("signup");
+const userMenu = document.getElementById("userMenu");
+const welcomeText = document.getElementById("welcomeText");
+
+let usersDB = JSON.parse(localStorage.getItem("usersDB")) || [];
+let messagesDB = JSON.parse(localStorage.getItem("messagesDB")) || [];
+let currentUser = localStorage.getItem("currentUser");
+let savedMode = localStorage.getItem("mode") || "light";
+
+document.body.className = savedMode;
+document.getElementById("modeSelect").value = savedMode;
+
+if(currentUser) showUserMenu(currentUser);
+
+function openLogin(){ loginBox.style.display="block"; signupBox.style.display="none"; }
+function openSignup(){ signupBox.style.display="block"; loginBox.style.display="none"; }
+
+function signupUser(){
+    const username = document.getElementById("username").value.trim();
+    const email = document.getElementById("email").value.trim();
+const password = document.getElementById("password").value;
+
+usersDB.push({ username, email, password });
+    localStorage.setItem("usersDB",JSON.stringify(usersDB));
+    localStorage.setItem("currentUser",username);
+    currentUser = username;
+    logActivity("Création du compte");
+    showUserMenu(username);
+}
+
+function loginUser(){
+    const username = document.getElementById("loginUsername").value.trim();
+    const password = document.getElementById("loginPassword").value;
+
+    const user = usersDB.find(
+        u => u.username === username && u.password === password
+    );
+
+    if(!user){
+        alert("❌ Identifiants incorrects");
+        return;
+    }
+
+    localStorage.setItem("currentUser", username);
+    currentUser = username;
+    logActivity("Connexion au compte");
+    showUserMenu(username);
+}
+
+function showUserMenu(username){
+    localStorage.setItem("lastLogin_"+username, new Date().toLocaleString());
+    welcomeText.textContent="Bienvenue "+username+" 👨‍💻";
+    welcomeText.style.fontSize = "25px";
+    mainMenu.style.display="none";
+    loginBox.style.display="none";
+    signupBox.style.display="none";
+    userMenu.style.display="block";
+}
+
+function logout(){
+    localStorage.removeItem("currentUser");
+    userMenu.style.display="none";
+    mainMenu.style.display="block";
+}
+
+function changeMode(mode){
+    document.body.className = mode;
+    localStorage.setItem("mode",mode);
+    logActivity("Changement de thème : " + mode);
+}
+
+function deleteAccount(){
+    usersDB = usersDB.filter(u=>u.username!==currentUser);
+    localStorage.setItem("usersDB",JSON.stringify(usersDB));
+    logout();
+}
+
+function handleProfileAction(action){
+    if(action === "view"){
+        openProfile();
+    }
+
+    if(action === "edit"){
+        userMenu.style.display="none";
+        document.getElementById("editProfile").style.display="block";
+        document.getElementById("profileBio").textContent = user.bio || "Aucune bio";
+    }
+
+    if(action === "password"){
+        userMenu.style.display="none";
+        document.getElementById("changePassword").style.display="block";
+    }
+}
+
+function saveProfile(){
+    const newUsername = document.getElementById("editUsername").value.trim();
+    const newBio = document.getElementById("editBio").value;
+    if(!newUsername) return;
+
+    const user = usersDB.find(u=>u.username===currentUser);
+    user.username = newUsername;
+    user.bio = newBio;
+
+    localStorage.setItem("usersDB",JSON.stringify(usersDB));
+    localStorage.setItem("currentUser",newUsername);
+    currentUser = newUsername;
+
+    document.getElementById("editProfile").style.display="none";
+    showUserMenu(newUsername);
+}
+
+function cancelEdit(){
+    document.getElementById("editProfile").style.display="none";
+    userMenu.style.display="block";
+}
+
+function savePassword(){
+    const oldPwd = document.getElementById("oldPassword").value;
+    const newPwd = document.getElementById("newPassword").value;
+
+    if(!oldPwd || !newPwd){
+        alert("❌ Champs manquants");
+        return;
+    }
+
+    const user = usersDB.find(u => u.username === currentUser);
+    if(!user) return;
+
+    if(user.password !== oldPwd){
+        alert("❌ Ancien mot de passe incorrect");
+        return;
+    }
+
+    user.password = newPwd;
+    localStorage.setItem("usersDB", JSON.stringify(usersDB));
+
+    document.getElementById("changePassword").style.display = "none";
+    showUserMenu(currentUser);
+
+    alert("✅ Mot de passe modifié");
+}
+
+function cancelPassword(){
+    document.getElementById("changePassword").style.display = "none";
+    userMenu.style.display = "block";
+}
+
+function openProfile(){
+    const user = usersDB.find(u => u.username === currentUser);
+    if(!user) return;
+
+    document.getElementById("profileUsername").textContent = user.username;
+    document.getElementById("profileEmail").textContent = user.email || "Non renseigné";
+    document.getElementById("profileBio").textContent =
+        user.bio || "Aucune bio";
+
+    userMenu.style.display = "none";
+    document.getElementById("viewProfile").style.display = "block";
+}
+
+function closeProfile(){
+    document.getElementById("viewProfile").style.display = "none";
+    userMenu.style.display = "block";
+}
+
+function openMessages(){
+    userMenu.style.display = "none";
+    document.getElementById("messagesBox").style.display = "block";
+    loadInbox();
+}
+
+function loadInbox(){
+    const inbox = document.getElementById("inboxMessages");
+    inbox.innerHTML = "";
+
+    const myMessages = messagesDB.filter(m => m.to === currentUser);
+
+    myMessages.forEach(m => m.read = true);
+localStorage.setItem("messagesDB", JSON.stringify(messagesDB));
+updateMessageBadge();
+
+    if(myMessages.length === 0){
+        inbox.innerHTML = "<p>Aucun message</p>";
+        return;
+    }
+
+    myMessages.reverse().forEach(m => {
+        inbox.innerHTML += `
+            <div style="margin-bottom:10px; padding:10px; border-radius:10px; background:rgba(255,255,255,0.15)">
+                <strong>De :</strong> ${m.from}<br>
+                <small>${m.date}</small>
+                <p>${m.text}</p>
+            </div>
+        `;
+    });
+}
+
+function sendMessage(){
+    const to = document.getElementById("msgTo").value.trim();
+    const text = document.getElementById("msgText").value.trim();
+
+    if(!to || !text){
+        alert("❌ Champs manquants");
+        return;
+    }
+
+    if(!usersDB.some(u => u.username === to)){
+        alert("❌ Utilisateur introuvable");
+        return;
+    }
+
+    messagesDB.push({
+        from: currentUser,
+        to: to,
+        text: text,
+        date: new Date().toLocaleString(),
+        read: false
+    });
+    logActivity("Message envoyé à " + to);
+
+    localStorage.setItem("messagesDB", JSON.stringify(messagesDB));
+
+    document.getElementById("msgText").value = "Message envoyé !";
+    alert("✅ Message envoyé");
+}
+
+function closeMessages(){
+    document.getElementById("messagesBox").style.display = "none";
+    userMenu.style.display = "block";
+}
+
+function openDashboard(){
+    const user = usersDB.find(u => u.username === currentUser);
+    if(!user) return;
+
+    const inboxCount = messagesDB.filter(m => m.to === currentUser).length;
+    const sentCount = messagesDB.filter(m => m.from === currentUser).length;
+
+    document.getElementById("dashUsername").textContent = user.username;
+    document.getElementById("dashEmail").textContent = user.email || "Non renseigné";
+    document.getElementById("dashInbox").textContent = inboxCount;
+    document.getElementById("dashSent").textContent = sentCount;
+
+    let lastLogin = localStorage.getItem("lastLogin_"+currentUser);
+    if(!lastLogin){
+        lastLogin = new Date().toLocaleString();
+        localStorage.setItem("lastLogin_"+currentUser, lastLogin);
+    }
+    document.getElementById("dashLastLogin").textContent = lastLogin;
+    const history = JSON.parse(localStorage.getItem("activity_"+currentUser)) || [];
+const logBox = document.getElementById("activityLog");
+logBox.innerHTML = "";
+
+history.forEach(a => {
+    logBox.innerHTML += `<p>• ${a.text}<br><small>${a.date}</small></p>`;
+});
+
+    userMenu.style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+}
+
+function closeDashboard(){
+    document.getElementById("dashboard").style.display = "none";
+    userMenu.style.display = "block";
+}
+function updateMessageBadge(){
+    const unread = messagesDB.filter(
+        m => m.to === currentUser && !m.read
+    ).length;
+
+    const badge = document.getElementById("msgBadge");
+    if(!badge) return;
+
+    if(unread > 0){
+        badge.style.display = "inline-block";
+        badge.textContent = unread;
+    } else {
+        badge.style.display = "none";
+    }
+}
+
+function logActivity(text){
+    let history = JSON.parse(localStorage.getItem("activity_"+currentUser)) || [];
+    history.unshift({
+        text,
+        date: new Date().toLocaleString()
+    });
+    history = history.slice(0, 10); // max 10
+    localStorage.setItem("activity_"+currentUser, JSON.stringify(history));
+}
+
+function saveBio(){
+    const bio = document.getElementById("bioInput").value.trim();
+    if(!bio){
+        alert("❌ Bio vide");
+        return;
+    }
+
+    const user = usersDB.find(u => u.username === currentUser);
+    if(!user) return;
+
+    user.bio = bio;
+    localStorage.setItem("usersDB", JSON.stringify(usersDB));
+
+    alert("✅ Bio enregistrée");
+}
+
+function openGameMenu(){
+    userMenu.style.display = "none";
+    document.getElementById("gameMenu").style.display = "block";
+}
+
+function closeGameMenu(){
+    document.getElementById("gameMenu").style.display = "none";
+    userMenu.style.display = "block";
+}
+
+function launchGame(game){
+
+    if(game === "snake"){
+        document.getElementById("gameMenu").style.display = "none";
+        document.getElementById("snakeGame").style.display = "block";
+        startSnake();
+        return;
+    }
+
+    if(game === "clicker"){
+        startClicker();
+        return;
+    }
+
+    if(game === "memory"){
+        startMemory();
+        return;
+    }
+
+    if(game === "reaction"){
+        startReaction();
+        return;
+    }
+
+    if(game === "dodge"){
+        startDodge();
+        return;
+    }
+
+    if(game === "simon"){
+        document.getElementById("gameMenu").style.display = "none";
+        document.getElementById("simonGame").style.display = "block";
+        startSimon();
+    return;
+    }
+
+    if(game === "aim"){
+        startAim();
+    return;
+    }
+
+    if(game === "pong"){
+        startPong();
+    return;
+    }
+
+    if(game === "pong"){
+        startPong();
+    return;
+    }
+
+    // jeux pas encore faits
+    alert("🎮 Jeu à venir !");
+}
+
+let snake, food, dir, score, snakeInterval;
+const box = 15;
+
+function startSnake(){
+
+    // 🔥 SUPPRIME L'OVERLAY GAME OVER S'IL EXISTE
+    const oldOverlay = document.getElementById("snakeGameOver");
+    if(oldOverlay) oldOverlay.remove();
+
+    clearInterval(snakeInterval);
+    const canvas = document.getElementById("snakeCanvas");
+    const ctx = canvas.getContext("2d");
+
+    snake = [{x:150, y:150}];
+    food = randomFood();
+    dir = "RIGHT";
+    score = 0;
+    document.getElementById("snakeScore").textContent = score;
+
+    snakeInterval = setInterval(gameLoop, 100);
+
+    document.onkeydown = e => {
+        if(e.key === "ArrowUp" && dir !== "DOWN") dir = "UP";
+        if(e.key === "ArrowDown" && dir !== "UP") dir = "DOWN";
+        if(e.key === "ArrowLeft" && dir !== "RIGHT") dir = "LEFT";
+        if(e.key === "ArrowRight" && dir !== "LEFT") dir = "RIGHT";
+    };document.addEventListener("keydown", function escQuit(e){
+    if(e.key === "Escape"){
+        closeSnake();
+        document.removeEventListener("keydown", escQuit);
+    }
+});
+
+    function gameLoop(){
+        ctx.clearRect(0,0,300,300);
+
+        // nourriture
+        ctx.fillStyle = "lime";
+        ctx.fillRect(food.x, food.y, box, box);
+
+        // tête
+        let head = {...snake[0]};
+        if(dir === "UP") head.y -= box;
+        if(dir === "DOWN") head.y += box;
+        if(dir === "LEFT") head.x -= box;
+        if(dir === "RIGHT") head.x += box;
+
+        // collisions
+        if(head.x < 0 || head.y < 0 || head.x >= 300 || head.y >= 300 ||
+            snake.some(s => s.x === head.x && s.y === head.y)){
+            clearInterval(snakeInterval);
+             showSnakeGameOver();
+            return;
+        }
+
+        snake.unshift(head);
+
+        // manger
+        if(head.x === food.x && head.y === food.y){
+    score++;
+    document.getElementById("snakeScore").textContent = score;
+
+    const eatSound = document.getElementById("eatSound");
+    eatSound.currentTime = 0;
+    eatSound.play();
+
+    if(score % 5 === 0 && speed > 50){
+        speed -= 10;
+        clearInterval(snakeInterval);
+        snakeInterval = setInterval(gameLoop, speed);
+    }
+
+    food = randomFood();
+} else {
+    snake.pop();
+}
+
+        // dessin snake
+        ctx.fillStyle = "#00e676";
+        snake.forEach(s => ctx.fillRect(s.x, s.y, box, box));
+    }
+}
+
+function randomFood(){
+    return {
+        x: Math.floor(Math.random()*20)*box,
+        y: Math.floor(Math.random()*20)*box
+    };
+}
+
+function closeSnake(){
+    if(snakeInterval){
+        clearInterval(snakeInterval);
+        snakeInterval = null;
+    }
+
+    document.getElementById("snakeGame").style.display = "none";
+    document.getElementById("gameMenu").style.display = "block";
+}
+
+function gameOver(){
+    clearInterval(snakeInterval);
+    
+    document.getElementById("deadSound").play();
+
+    let best = localStorage.getItem("snakeBest") || 0;
+    if(score > best){
+        localStorage.setItem("snakeBest", score);
+        best = score;
+    }
+
+    setTimeout(() => {
+        alert(`💀 Game Over\nScore : ${score}\n🏆 Meilleur : ${best}`);
+        closeSnake();
+    }, 100);
+}
+
+let clickerScore = 0;
+let clickPower = 1;
+let autoClick = 0;
+
+let upgradeCost = 10;
+let autoCost = 25;
+let autoInterval = null;
+
+// LANCEMENT
+function startClicker(){
+    document.getElementById("gameMenu").style.display = "none";
+    document.getElementById("clickerGame").style.display = "block";
+
+    // chargement sauvegarde
+    clickerScore = Number(localStorage.getItem("clickerScore")) || 0;
+    clickPower = Number(localStorage.getItem("clickPower")) || 1;
+    autoClick = Number(localStorage.getItem("autoClick")) || 0;
+    upgradeCost = Number(localStorage.getItem("upgradeCost")) || 10;
+    autoCost = Number(localStorage.getItem("autoCost")) || 25;
+
+    updateClickerUI();
+
+    if(autoInterval) clearInterval(autoInterval);
+    autoInterval = setInterval(() => {
+        clickerScore += autoClick;
+        updateClickerUI();
+        saveClicker();
+    }, 1000);
+}
+
+// CLIQUE
+function clickerClick(){
+    clickerScore += clickPower;
+    updateClickerUI();
+    saveClicker();
+}
+
+// AMÉLIORATION CLIC
+function buyUpgrade(){
+    if(clickerScore < upgradeCost) return alert("❌ Pas assez de points");
+
+    clickerScore -= upgradeCost;
+    clickPower++;
+    upgradeCost = Math.floor(upgradeCost * 1.6);
+
+    updateClickerUI();
+    saveClicker();
+}
+
+// AUTO CLICK
+function buyAuto(){
+    if(clickerScore < autoCost) return alert("❌ Pas assez de points");
+
+    clickerScore -= autoCost;
+    autoClick++;
+    autoCost = Math.floor(autoCost * 1.7);
+
+    updateClickerUI();
+    saveClicker();
+}
+
+// UI
+function updateClickerUI(){
+    document.getElementById("clickerScore").textContent = clickerScore;
+    document.getElementById("clickerPerSec").textContent = autoClick;
+    document.getElementById("upgradeCost").textContent = upgradeCost;
+    document.getElementById("autoCost").textContent = autoCost;
+}
+
+// SAVE
+function saveClicker(){
+    localStorage.setItem("clickerScore", clickerScore);
+    localStorage.setItem("clickPower", clickPower);
+    localStorage.setItem("autoClick", autoClick);
+    localStorage.setItem("upgradeCost", upgradeCost);
+    localStorage.setItem("autoCost", autoCost);
+}
+
+// QUITTER
+function closeClicker(){
+    if(autoInterval){
+        clearInterval(autoInterval);
+        autoInterval = null;
+    }
+
+    document.getElementById("clickerGame").style.display = "none";
+    document.getElementById("gameMenu").style.display = "block";
+}
+
+let memoryCards = [];
+let flippedCards = [];
+let matchedPairs = 0;
+let moves = 0;
+
+const symbols = ["🍎","🍌","🍇","🍒","🍓","🍍","🥝","🍑"];
+
+// LANCER LE JEU
+function startMemory(){
+    document.getElementById("gameMenu").style.display = "none";
+    document.getElementById("memoryGame").style.display = "block";
+
+    memoryCards = [...symbols, ...symbols].sort(() => 0.5 - Math.random());
+    flippedCards = [];
+    matchedPairs = 0;
+    moves = 0;
+
+    document.getElementById("memoryMoves").textContent = moves;
+
+    const grid = document.getElementById("memoryGrid");
+    grid.innerHTML = "";
+
+    memoryCards.forEach((symbol, index) => {
+        const card = document.createElement("div");
+        card.textContent = "❓";
+        card.style.height = "55px";
+        card.style.fontSize = "28px";
+        card.style.display = "flex";
+        card.style.alignItems = "center";
+        card.style.justifyContent = "center";
+        card.style.cursor = "pointer";
+        card.style.borderRadius = "10px";
+        card.style.background = "rgba(255,255,255,0.2)";
+
+        card.onclick = () => flipCard(card, symbol, index);
+        grid.appendChild(card);
+    });
+}
+
+// RETOURNER CARTE
+function flipCard(card, symbol, index){
+    if(flippedCards.length === 2) return;
+    if(card.classList.contains("matched")) return;
+
+    card.textContent = symbol;
+    flippedCards.push({ card, symbol, index });
+
+    if(flippedCards.length === 2){
+        moves++;
+        document.getElementById("memoryMoves").textContent = moves;
+
+        setTimeout(checkMatch, 600);
+    }
+}
+
+// VÉRIFIER PAIRE
+function checkMatch(){
+    const [a, b] = flippedCards;
+
+    if(a.symbol === b.symbol){
+        a.card.classList.add("matched");
+        b.card.classList.add("matched");
+        matchedPairs++;
+
+        if(matchedPairs === symbols.length){
+            setTimeout(() => {
+                alert("🎉 Bravo ! Terminé en " + moves + " coups");
+                closeMemory();
+            }, 300);
+        }
+    } else {
+        a.card.textContent = "❓";
+        b.card.textContent = "❓";
+    }
+
+    flippedCards = [];
+}
+
+// QUITTER
+function closeMemory(){
+    document.getElementById("memoryGame").style.display = "none";
+    document.getElementById("gameMenu").style.display = "block";
+}
+
+let reactionStart = 0;
+let reactionTimeout = null;
+let waiting = false;
+let canClick = false;
+
+function startReaction(){
+    // 🔥 reset propre
+    clearTimeout(reactionTimeout);
+    reactionTimeout = null;
+
+    const btn = document.getElementById("reactionBtn");
+
+    document.getElementById("gameMenu").style.display = "none";
+    document.getElementById("reactionGame").style.display = "block";
+
+    btn.disabled = false;
+    btn.style.background = "#999";
+    btn.textContent = "Attends...";
+
+    document.getElementById("reactionStatus").textContent = "Prépare-toi...";
+    document.getElementById("reactionTime").textContent = "--";
+
+    waiting = true;
+    canClick = false;
+
+    const delay = Math.random() * 3000 + 1000;
+
+    reactionTimeout = setTimeout(() => {
+        btn.style.background = "#00c853";
+        btn.textContent = "CLIQUE !";
+        document.getElementById("reactionStatus").textContent = "MAINTENANT !";
+
+        reactionStart = Date.now();
+        waiting = false;
+        canClick = true;
+    }, delay);
+
+    const best = localStorage.getItem("reactionBest_"+currentUser);
+    document.getElementById("reactionBest").textContent = best || "--";
+}
+
+function reactionClick(){
+    const btn = document.getElementById("reactionBtn");
+
+    // ❌ CLIC TROP TÔT
+    if(waiting){
+        clearTimeout(reactionTimeout);
+        reactionTimeout = null;
+
+        btn.disabled = true;
+        btn.style.background = "#d32f2f"; // rouge
+        btn.textContent = "Trop tôt ❌";
+
+        document.getElementById("reactionStatus").textContent = "Trop tôt ❌";
+        canClick = false;
+        waiting = false;
+        return;
+    }
+
+    // ❌ clic interdit
+    if(!canClick) return;
+
+    // ✅ BON CLIC
+    canClick = false;
+    waiting = false;
+
+    btn.disabled = true;
+
+    const time = Date.now() - reactionStart;
+    document.getElementById("reactionTime").textContent = time;
+
+    const key = "reactionBest_"+currentUser;
+    const best = localStorage.getItem(key);
+
+    if(!best || time < best){
+        localStorage.setItem(key, time);
+        document.getElementById("reactionBest").textContent = time;
+    }
+
+    btn.textContent = "Terminé";
+    btn.style.background = "#555";
+    document.getElementById("reactionStatus").textContent = "Bien joué 🎯";
+}
+
+function closeReaction(){
+    clearTimeout(reactionTimeout);
+    reactionTimeout = null;
+
+    waiting = false;
+    canClick = false;
+
+    const btn = document.getElementById("reactionBtn");
+    btn.disabled = false;
+
+    document.getElementById("reactionGame").style.display = "none";
+    document.getElementById("gameMenu").style.display = "block";
+}
+
+let dodgeInterval = null;
+let dodgePlayer, dodgeEnemies, dodgeScore, dodgeStart;
+let dodgeDir = { x: 0, y: 0 };
+let dodgeSpawnTimeout = null;
+let dodgeRunning = false;
+// 🔥 difficulté
+let dodgeSpawnRate = 1000; // ms
+let dodgeSpeedBonus = 0;   // vitesse ajoutée
+let dodgeLevel = 1;
+
+function startDodge(){
+    // 🔥 RESET TOTAL
+    clearInterval(dodgeInterval);
+    clearTimeout(dodgeSpawnTimeout);
+
+    dodgeRunning = true;
+
+    document.getElementById("gameMenu").style.display = "none";
+    document.getElementById("dodgeGame").style.display = "block";
+    dodgeLevel = 1;
+    document.getElementById("dodgeLevel").textContent = dodgeLevel;
+
+    dodgePlayer = { x: 140, y: 140, size: 20 };
+    dodgeEnemies = [];
+    dodgeScore = 0;
+    dodgeStart = Date.now();
+    dodgeLevel = 1;
+    dodgeSpawnRate = 1000;
+    dodgeSpeedBonus = 0;
+
+    document.getElementById("dodgeLevel").textContent = dodgeLevel;
+
+    dodgeDir = { x: 0, y: 0 };
+
+    // 🎯 reset difficulté
+    dodgeSpawnRate = 1000;
+    dodgeSpeedBonus = 0;
+
+    spawnEnemy();
+    dodgeInterval = setInterval(dodgeLoop, 40);
+
+    document.onkeydown = e => {
+        if(e.key === "ArrowUp") dodgeDir = { x: 0, y: -4 };
+        if(e.key === "ArrowDown") dodgeDir = { x: 0, y: 4 };
+        if(e.key === "ArrowLeft") dodgeDir = { x: -4, y: 0 };
+        if(e.key === "ArrowRight") dodgeDir = { x: 4, y: 0 };
+    };
+}
+
+function spawnEnemy(){
+    if(!dodgeRunning) return;
+
+    dodgeEnemies.push({
+        x: Math.random() * 280,
+        y: -20,
+        size: 20,
+        speed: 2 + Math.random() * 2 + dodgeSpeedBonus
+    });
+
+    dodgeSpawnTimeout = setTimeout(spawnEnemy, dodgeSpawnRate);
+}
+
+function dodgeLoop(){
+    const canvas = document.getElementById("dodgeCanvas");
+    const ctx = canvas.getContext("2d");
+
+    ctx.clearRect(0,0,300,300);
+
+    // joueur
+    dodgePlayer.x += dodgeDir.x;
+    dodgePlayer.y += dodgeDir.y;
+
+    dodgePlayer.x = Math.max(0, Math.min(280, dodgePlayer.x));
+    dodgePlayer.y = Math.max(0, Math.min(280, dodgePlayer.y));
+
+    ctx.fillStyle = "#00e5ff";
+    ctx.fillRect(dodgePlayer.x, dodgePlayer.y, 20, 20);
+
+    // ennemis
+    ctx.fillStyle = "#ff1744";
+    dodgeEnemies.forEach(e => {
+        e.y += e.speed;
+        ctx.fillRect(e.x, e.y, e.size, e.size);
+
+        // collision
+        if(
+            e.x < dodgePlayer.x + 20 &&
+            e.x + e.size > dodgePlayer.x &&
+            e.y < dodgePlayer.y + 20 &&
+            e.y + e.size > dodgePlayer.y
+        ){
+            endDodge();
+        }
+    });
+
+       // ⏱️ temps de survie (score)
+      dodgeScore = Math.floor((Date.now() - dodgeStart) / 1000);
+      document.getElementById("dodgeScore").textContent = dodgeScore;
+
+      // 🎯 calcul du niveau
+      const newLevel = Math.floor(dodgeScore / 5) + 1;
+      if(newLevel !== dodgeLevel){
+      dodgeLevel = newLevel;
+      document.getElementById("dodgeLevel").textContent = dodgeLevel;
+
+      // 🔥 difficulté augmente avec le niveau
+      dodgeSpeedBonus = Math.min(6, dodgeSpeedBonus + 0.4);
+      dodgeSpawnRate = Math.max(350, dodgeSpawnRate - 60);
+     }
+
+}
+
+function endDodge(){
+    dodgeRunning = false;
+
+    clearInterval(dodgeInterval);
+    clearTimeout(dodgeSpawnTimeout);
+
+    const key = "dodgeBest_" + currentUser;
+    const best = localStorage.getItem(key);
+
+    if(!best || dodgeScore > best){
+        localStorage.setItem(key, dodgeScore);
+        document.getElementById("dodgeBest").textContent = dodgeScore;
+    }
+
+    drawGameOver();
+}
+
+function closeDodge(){
+    dodgeRunning = false;
+
+    clearInterval(dodgeInterval);
+    clearTimeout(dodgeSpawnTimeout);
+
+    document.getElementById("dodgeGame").style.display = "none";
+    document.getElementById("gameMenu").style.display = "block";
+}
+
+function drawGameOver(){
+    const canvas = document.getElementById("dodgeCanvas");
+    const ctx = canvas.getContext("2d");
+
+    ctx.fillStyle = "rgba(0,0,0,0.6)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#ff1744";
+    ctx.font = "bold 32px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("GAME OVER", canvas.width/2, canvas.height/2 - 10);
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "16px Arial";
+    ctx.fillText("Clique sur Rejouer", canvas.width/2, canvas.height/2 + 25);
+}
+
+function drawSnakeGameOver(){
+    const canvas = document.getElementById("snakeCanvas");
+    const ctx = canvas.getContext("2d");
+
+    ctx.fillStyle = "rgba(0,0,0,0.6)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#ff1744";
+    ctx.font = "bold 32px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - 10);
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "16px Arial";
+    ctx.fillText("Clique sur Rejouer", canvas.width / 2, canvas.height / 2 + 25);
+}
+
+function showSnakeGameOver(){
+    const overlay = document.createElement("div");
+
+    overlay.id = "snakeGameOver";
+    overlay.style.position = "absolute";
+    overlay.style.top = "50%";
+    overlay.style.left = "50%";
+    overlay.style.transform = "translate(-50%, -50%)";
+    overlay.style.background = "rgba(0,0,0,0.85)";
+    overlay.style.color = "white";
+    overlay.style.padding = "30px";
+    overlay.style.borderRadius = "15px";
+    overlay.style.textAlign = "center";
+    overlay.style.zIndex = "999";
+
+    overlay.innerHTML = `
+        <h2>💀 GAME OVER</h2>
+        <p>Score : <strong>${score}</strong></p>
+        <button onclick="replaySnake()">🔄 Rejouer</button>
+    `;
+
+    document.getElementById("snakeGame").appendChild(overlay);
+}
+
+function replaySnake(){
+    const overlay = document.getElementById("snakeGameOver");
+    if(overlay) overlay.remove();
+
+    startSnake();
+}
+
+let simonSequence = [];
+let simonInput = [];
+let simonLevel = 1;
+let simonPlaying = false;
+
+function startSimon(){
+    document.getElementById("gameMenu").style.display = "none";
+    document.getElementById("simonGame").style.display = "block";
+
+    simonSequence = [];
+    simonLevel = 1;
+    nextSimonRound();
+}
+
+function nextSimonRound(){
+    simonInput = [];
+    document.getElementById("simonLevel").textContent = simonLevel;
+    document.getElementById("simonStatus").textContent = "Regarde la séquence 👀";
+
+    simonSequence.push(Math.floor(Math.random()*4));
+    playSimonSequence();
+}
+
+function playSimonSequence(){
+    simonPlaying = true;
+    let i = 0;
+
+    const interval = setInterval(()=>{
+        flashSimon(simonSequence[i]);
+        i++;
+        if(i >= simonSequence.length){
+            clearInterval(interval);
+            simonPlaying = false;
+            document.getElementById("simonStatus").textContent = "À toi de jouer 🎯";
+        }
+    }, 600);
+}
+
+function flashSimon(index){
+    const btns = document.querySelectorAll(".simon-btn");
+    btns[index].classList.add("active");
+    setTimeout(()=>btns[index].classList.remove("active"), 300);
+}
+
+function pressSimon(index){
+    if(simonPlaying) return;
+
+    simonInput.push(index);
+    flashSimon(index);
+
+    const step = simonInput.length - 1;
+    if(simonInput[step] !== simonSequence[step]){
+        document.getElementById("simonStatus").textContent = "💀 Perdu ! Niveau atteint : " + simonLevel;
+        return;
+    }
+
+    if(simonInput.length === simonSequence.length){
+        simonLevel++;
+        setTimeout(nextSimonRound, 800);
+    }
+}
+
+function closeSimon(){
+    document.getElementById("simonGame").style.display = "none";
+    document.getElementById("gameMenu").style.display = "block";
+}
+
+let aimScore = 0;
+let aimTime = 30;
+let aimInterval = null;
+let aimTimer = null;
+
+function startAim(){
+    document.getElementById("gameMenu").style.display = "none";
+    document.getElementById("aimGame").style.display = "block";
+
+    aimScore = 0;
+    aimTime = 30;
+
+    document.getElementById("aimScore").textContent = aimScore;
+    document.getElementById("aimTime").textContent = aimTime;
+
+    const best = localStorage.getItem("aimBest_" + currentUser);
+    document.getElementById("aimBest").textContent = best || "--";
+
+    const zone = document.getElementById("aimZone");
+    zone.innerHTML = "";
+
+    spawnTarget();
+
+    aimInterval = setInterval(spawnTarget, 800);
+    aimTimer = setInterval(() => {
+        aimTime--;
+        document.getElementById("aimTime").textContent = aimTime;
+
+        if(aimTime <= 0){
+            endAim();
+        }
+    }, 1000);
+}
+
+function spawnTarget(){
+    const zone = document.getElementById("aimZone");
+    zone.innerHTML = "";
+
+    const target = document.createElement("div");
+    target.style.width = "35px";
+    target.style.height = "35px";
+    target.style.borderRadius = "50%";
+    target.style.background = "#00e676";
+    target.style.position = "absolute";
+    target.style.cursor = "pointer";
+
+    target.style.left = Math.random() * 260 + "px";
+    target.style.top = Math.random() * 260 + "px";
+
+    target.onclick = () => {
+        aimScore++;
+        document.getElementById("aimScore").textContent = aimScore;
+        spawnTarget();
+    };
+
+    zone.appendChild(target);
+}
+
+function endAim(){
+    clearInterval(aimInterval);
+    clearInterval(aimTimer);
+
+    const key = "aimBest_" + currentUser;
+    const best = localStorage.getItem(key);
+
+    if(!best || aimScore > best){
+        localStorage.setItem(key, aimScore);
+        document.getElementById("aimBest").textContent = aimScore;
+    }
+
+    alert("⏱️ Temps écoulé !\nScore : " + aimScore);
+}
+
+function closeAim(){
+    clearInterval(aimInterval);
+    clearInterval(aimTimer);
+
+    document.getElementById("aimGame").style.display = "none";
+    document.getElementById("gameMenu").style.display = "block";
+}
+
+let pongInterval;
+let pPlayer, pAI, pBall;
+let pPlayerScore = 0;
+let pAiScore = 0;
+
+function startPong(){
+    document.getElementById("gameMenu").style.display = "none";
+    document.getElementById("pongGame").style.display = "block";
+
+    pPlayerScore = 0;
+    pAiScore = 0;
+    updatePongScore();
+
+    pPlayer = { x: 10, y: 120, w: 10, h: 60 };
+    pAI = { x: 280, y: 120, w: 10, h: 60 };
+    resetBall();
+
+    clearInterval(pongInterval);
+    pongInterval = setInterval(pongLoop, 20);
+
+    document.onkeydown = e => {
+        if(e.key === "ArrowUp") pPlayer.y -= 15;
+        if(e.key === "ArrowDown") pPlayer.y += 15;
+    };
+}
+
+function resetBall(){
+    pBall = {
+        x: 150,
+        y: 150,
+        r: 6,
+        vx: Math.random() > 0.5 ? 4 : -4,
+        vy: (Math.random() * 4) - 2
+    };
+}
+
+function pongLoop(){
+    const c = document.getElementById("pongCanvas");
+    const ctx = c.getContext("2d");
+
+    ctx.clearRect(0,0,300,300);
+
+    // limites joueur
+    pPlayer.y = Math.max(0, Math.min(240, pPlayer.y));
+
+    // IA simple
+    pAI.y += (pBall.y - (pAI.y + pAI.h/2)) * 0.08;
+
+    // balle
+    pBall.x += pBall.vx;
+    pBall.y += pBall.vy;
+
+    if(pBall.y < 0 || pBall.y > 300) pBall.vy *= -1;
+
+    // collisions raquettes
+    if(collide(pPlayer, pBall)) pBall.vx = Math.abs(pBall.vx);
+    if(collide(pAI, pBall)) pBall.vx = -Math.abs(pBall.vx);
+
+    // score
+    if(pBall.x < 0){
+        pAiScore++;
+        checkPongWin();
+        resetBall();
+    }
+
+    if(pBall.x > 300){
+        pPlayerScore++;
+        checkPongWin();
+        resetBall();
+    }
+
+    updatePongScore();
+
+    // dessin
+    ctx.fillStyle = "#00e5ff";
+    ctx.fillRect(pPlayer.x, pPlayer.y, pPlayer.w, pPlayer.h);
+
+    ctx.fillStyle = "#ff1744";
+    ctx.fillRect(pAI.x, pAI.y, pAI.w, pAI.h);
+
+    ctx.fillStyle = "#fff";
+    ctx.beginPath();
+    ctx.arc(pBall.x, pBall.y, pBall.r, 0, Math.PI*2);
+    ctx.fill();
+}
+
+function collide(paddle, ball){
+    return (
+        ball.x - ball.r < paddle.x + paddle.w &&
+        ball.x + ball.r > paddle.x &&
+        ball.y > paddle.y &&
+        ball.y < paddle.y + paddle.h
+    );
+}
+
+function updatePongScore(){
+    document.getElementById("pongPlayerScore").textContent = pPlayerScore;
+    document.getElementById("pongAiScore").textContent = pAiScore;
+}
+
+function checkPongWin(){
+    if(pPlayerScore === 5 || pAiScore === 5){
+        clearInterval(pongInterval);
+        setTimeout(() => {
+            alert(pPlayerScore === 5 ? "🏆 Tu gagnes !" : "💀 IA gagne !");
+        }, 100);
+    }
+}
+
+function closePong(){
+    clearInterval(pongInterval);
+    document.getElementById("pongGame").style.display = "none";
+    document.getElementById("gameMenu").style.display = "block";
+}
+
+let pongLoopId;
+let pongBall, pongP1, pongP2;
+let score1 = 0, score2 = 0;
+let pongSpeed = 4;
+let pongMode = "ai";
+
+function startPong(){
+    document.getElementById("gameMenu").style.display = "none";
+    document.getElementById("pongGame").style.display = "block";
+
+    pongMode = document.getElementById("pongMode").value;
+
+    score1 = 0;
+    score2 = 0;
+    pongSpeed = 4;
+    updatePongUI();
+
+    pongP1 = { x: 10, y: 120, w: 10, h: 60 };
+    pongP2 = { x: 280, y: 120, w: 10, h: 60 };
+    resetPongBall();
+
+    clearInterval(pongLoopId);
+    pongLoopId = setInterval(pongLoop, 20);
+
+    document.onkeydown = e => {
+        if(e.key === "ArrowUp") pongP1.y -= 12;
+        if(e.key === "ArrowDown") pongP1.y += 12;
+
+        if(pongMode === "2p"){
+            if(e.key === "w") pongP2.y -= 12;
+            if(e.key === "s") pongP2.y += 12;
+        }
+    };
+}
+
+function resetPongBall(){
+    pongBall = {
+        x: 150,
+        y: 150,
+        r: 6,
+        vx: Math.random() > 0.5 ? pongSpeed : -pongSpeed,
+        vy: (Math.random()*4)-2
+    };
+}
+
+function pongLoop(){
+    const c = document.getElementById("pongCanvas");
+    const ctx = c.getContext("2d");
+
+    ctx.clearRect(0,0,300,300);
+
+    pongP1.y = Math.max(0, Math.min(240, pongP1.y));
+    pongP2.y = Math.max(0, Math.min(240, pongP2.y));
+
+    // IA intelligente
+    if(pongMode === "ai"){
+        pongP2.y += (pongBall.y - (pongP2.y + pongP2.h/2)) * 0.12;
+    }
+
+    // balle
+    pongBall.x += pongBall.vx;
+    pongBall.y += pongBall.vy;
+
+    if(pongBall.y < 0 || pongBall.y > 300) pongBall.vy *= -1;
+
+    if(hit(pongP1, pongBall)) pongBall.vx = Math.abs(pongBall.vx);
+    if(hit(pongP2, pongBall)) pongBall.vx = -Math.abs(pongBall.vx);
+
+    // score
+    if(pongBall.x < 0){
+        score2++; levelUp(); resetPongBall();
+    }
+    if(pongBall.x > 300){
+        score1++; levelUp(); resetPongBall();
+    }
+
+    checkWin();
+    updatePongUI();
+
+    // dessin néon
+    ctx.fillStyle = "#00e5ff";
+    ctx.fillRect(pongP1.x, pongP1.y, pongP1.w, pongP1.h);
+
+    ctx.fillStyle = "#ff1744";
+    ctx.fillRect(pongP2.x, pongP2.y, pongP2.w, pongP2.h);
+
+    ctx.shadowColor = "#00e5ff";
+    ctx.shadowBlur = 15;
+    ctx.fillStyle = "#fff";
+    ctx.beginPath();
+    ctx.arc(pongBall.x, pongBall.y, pongBall.r, 0, Math.PI*2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+}
+
+function levelUp(){
+    pongSpeed += 0.3;
+    pongBall.vx = pongBall.vx > 0 ? pongSpeed : -pongSpeed;
+}
+
+function hit(p, b){
+    return (
+        b.x-b.r < p.x+p.w &&
+        b.x+b.r > p.x &&
+        b.y > p.y &&
+        b.y < p.y+p.h
+    );
+}
+
+function checkWin(){
+    if(score1 === 5 || score2 === 5){
+        clearInterval(pongLoopId);
+
+        const winner = score1 === 5 ? "Joueur 1" : "Joueur 2 / IA";
+        alert("🏆 Victoire : " + winner);
+
+        const key = "pongBest_"+currentUser;
+        const best = localStorage.getItem(key);
+
+        if(!best || score1 > best){
+            localStorage.setItem(key, score1);
+        }
+    }
+}
+
+function updatePongUI(){
+    document.getElementById("pongP1").textContent = score1;
+    document.getElementById("pongP2").textContent = score2;
+
+    const best = localStorage.getItem("pongBest_"+currentUser);
+    document.getElementById("pongBest").textContent = best || "--";
+}
+
+function closePong(){
+    clearInterval(pongLoopId);
+    document.getElementById("pongGame").style.display = "none";
+    document.getElementById("gameMenu").style.display = "block";
+}
+
+</script>
+
+<div id="snakeGame" class="form-box">
+    <h3>🐍 Snake</h3>
+
+    <button class="logout" onclick="closeSnake()">Quitter</button>
+
+    <canvas id="snakeCanvas" width="300" height="300"
+        style="background:#111; border-radius:10px;"></canvas>
+
+    <p>Score : <strong id="snakeScore">0</strong></p>
+</div>
+
+<audio id="eatSound"
+src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.wav">
+</audio>
+
+<audio id="deadSound"
+src="https://assets.mixkit.co/sfx/preview/mixkit-player-losing-or-failing-2042.wav">
+</audio>
+
+<div id="clickerGame" class="form-box">
+    <h3>🖱️ Clicker</h3>
+
+    <h2>💰 Points : <span id="clickerScore">0</span></h2>
+    <h4>⚡ Par seconde : <span id="clickerPerSec">0</span></h4>
+
+    <button onclick="clickerClick()" style="font-size:20px;">
+        👆 CLIQUE !
+    </button>
+
+    <hr>
+
+    <h4>🛒 Boutique</h4>
+
+    <button onclick="buyUpgrade()">
+        ➕ +1 / clic (coût : <span id="upgradeCost">10</span>)
+    </button>
+
+    <button onclick="buyAuto()">
+        🤖 +1 / sec (coût : <span id="autoCost">25</span>)
+    </button>
+
+    <hr>
+
+    <button class="logout" onclick="closeClicker()">Quitter</button>
+</div>
+
+<div id="memoryGame" class="form-box">
+    <h3>🧠 Memory</h3>
+
+    <p>⏱️ Coups : <strong id="memoryMoves">0</strong></p>
+
+    <div id="memoryGrid"
+         style="display:grid;
+                grid-template-columns:repeat(4,1fr);
+                gap:10px;
+                margin:15px auto;
+                max-width:260px;">
+    </div>
+
+    <button class="logout" onclick="closeMemory()">Quitter</button>
+</div>
+
+<div id="reactionGame" class="form-box" style="display:none; text-align:center;">
+    <h3>⚡ Test de réflexes</h3>
+
+    <p id="reactionStatus">Clique quand l'écran devient vert</p>
+
+    <button id="reactionBtn"
+    onclick="reactionClick()"
+    style="width:200px; height:120px; font-size:18px;">
+    Attends...
+    </button>
+
+    <p>⏱️ Temps : <strong id="reactionTime">--</strong> ms</p>
+    <p>🏆 Meilleur : <strong id="reactionBest">--</strong> ms</p>
+
+    <button onclick="startReaction()">🔄 Rejouer</button>
+    <button class="logout" onclick="closeReaction()">Quitter</button>
+</div>
+
+<div id="dodgeGame" class="form-box" style="display:none; text-align:center;">
+    <h3>🟥 Dodge Cube</h3>
+
+    <canvas id="dodgeCanvas" width="300" height="300"
+        style="background:#111; border-radius:12px;"></canvas>
+
+    <p>⏱️ Temps : <strong id="dodgeScore">0</strong> s</p>
+    <p>🏆 Record : <strong id="dodgeBest">--</strong> s</p>
+    <p>🎯 Niveau : <strong id="dodgeLevel">1</strong></p>
+
+    <button onclick="startDodge()">🔄 Rejouer</button>
+    <button class="logout" onclick="closeDodge()">Quitter</button>
+</div>
+
+<div id="simonGame" class="form-box" style="display:none; text-align:center;">
+    <h3>🔵 Simon Says</h3>
+
+    <p>Niveau : <strong id="simonLevel">1</strong></p>
+
+    <div style="display:grid; grid-template-columns:repeat(2,100px); gap:15px; justify-content:center;">
+        <div class="simon-btn" style="background:red" onclick="pressSimon(0)"></div>
+        <div class="simon-btn" style="background:green" onclick="pressSimon(1)"></div>
+        <div class="simon-btn" style="background:blue" onclick="pressSimon(2)"></div>
+        <div class="simon-btn" style="background:yellow" onclick="pressSimon(3)"></div>
+    </div>
+
+    <p id="simonStatus">Clique sur ▶️ pour commencer</p>
+
+    <button onclick="startSimon()">▶️ Démarrer</button>
+    <button class="logout" onclick="closeSimon()">Quitter</button>
+</div>
+
+<div id="aimGame" class="form-box" style="display:none; text-align:center;">
+    <h3>🎯 Aim Trainer</h3>
+
+    <p>⏱️ Temps : <strong id="aimTime">30</strong> s</p>
+    <p>🎯 Score : <strong id="aimScore">0</strong></p>
+    <p>🏆 Record : <strong id="aimBest">--</strong></p>
+
+    <div id="aimZone"
+         style="position:relative; width:300px; height:300px;
+                margin:15px auto; background:#111; border-radius:12px;">
+    </div>
+
+    <button onclick="startAim()">▶️ Démarrer</button>
+    <button class="logout" onclick="closeAim()">Quitter</button>
+</div>
+
+<div id="pongGame" class="form-box" style="display:none; text-align:center;">
+    <h3>🏓 Pong</h3>
+
+    <canvas id="pongCanvas" width="300" height="300"
+        style="background:#111; border-radius:12px;"></canvas>
+
+    <p>
+        🟦 Toi : <strong id="pongPlayerScore">0</strong>
+        —
+        🟥 IA : <strong id="pongAiScore">0</strong>
+    </p>
+
+    <button onclick="startPong()">🔄 Rejouer</button>
+    <button class="logout" onclick="closePong()">Quitter</button>
+</div>
+
+<div id="pongGame" class="form-box" style="display:none; text-align:center;">
+    <h3>🏓 Pong Ultimate</h3>
+
+    <canvas id="pongCanvas" width="300" height="300"
+        style="background:#060b16; border-radius:12px;
+               box-shadow:0 0 20px rgba(0,255,255,0.5);">
+    </canvas>
+
+    <p>
+        🟦 J1 : <strong id="pongP1">0</strong>
+        —
+        🟥 J2 : <strong id="pongP2">0</strong>
+    </p>
+
+    <p>🏆 Record : <strong id="pongBest">--</strong></p>
+
+    <select id="pongMode">
+        <option value="ai">🤖 1 joueur (IA)</option>
+        <option value="2p">👥 2 joueurs</option>
+    </select>
+
+    <br><br>
+
+    <button onclick="startPong()">▶️ Démarrer</button>
+    <button class="logout" onclick="closePong()">Quitter</button>
+</div>
+
+</body>
+</html>
